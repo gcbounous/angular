@@ -1,0 +1,15 @@
+.hide {
+	display: none;
+}
+
+.log {
+	margin-top: 5px;
+	padding: 5px;
+	border: 1px solid black;
+}
+
+.overloaded {
+	background-color: blue;
+	color: white;
+	border-color: white
+}
