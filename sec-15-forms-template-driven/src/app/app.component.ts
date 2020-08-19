@@ -8,6 +8,7 @@ import { NgForm } from '@angular/forms';
 })
 export class AppComponent {
     @ViewChild('f', {static:true}) signUpForm: NgForm;
+    
     defaultSecret = 'pet';
     answer = '';
     genders = ['male', 'female'];
