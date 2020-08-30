@@ -31,8 +31,10 @@ export class ShoppingListService {
     addIngredient(name: string, amount: number) {
         if (amount <= 0){
             alert('Please insert a positive amount.')
+
         } else if (!name) {
             alert('Please insert a valid name.')
+
         } else {
             let exists = false;
             let index;
@@ -62,8 +64,20 @@ export class ShoppingListService {
         this.ingredientListChanged.next(this.getIngredients());
     }
 
-    addIngredientList(ingredients: Ingredient[]) {
-        this.ingredients.push(...ingredients);
+    addIngredientList(ingredientsToAdd: Ingredient[]) {
+
+        for (let i = 0; i < ingredientsToAdd.length; i++) {
+            for (let j = 0; j < this.ingredients.length; j++) {
+                if (ingredientsToAdd[i].name.toUpperCase() == this.ingredients[j].name.toUpperCase()) {
+                    let amount = this.ingredients[j].amount + ingredientsToAdd[i].amount;
+                    this.editIngredient(j, this.ingredients[j].name, amount);
+                    ingredientsToAdd.splice(i,1);
+                    break;
+                }
+            }
+        }
+
+        this.ingredients.push(...ingredientsToAdd);
         this.ingredientListChanged.next(this.getIngredients());
     }
 
