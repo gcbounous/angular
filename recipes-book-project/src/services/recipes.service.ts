@@ -32,24 +32,28 @@ export class RecipesService {
 		this.recipeSelected.next(recipe);
     }
     
-    newRecipe(name: string, desc: string, imgPath: string): number {
-        debugger;
-        let recipe = new Recipe(name, desc, imgPath);
+    newRecipe(recipe: Recipe): number {
         this.recipes.push(recipe);
+
         this.changedRecipes.next(this.getRecipes());
         this.selectRecipe(recipe);
 
         return this.getRecipes().length - 1;
     }
 
-    editRecipe(index: number, name: string, desc: string, imgPath: string) {
+    editRecipe(index: number, recipe: Recipe) {
         if (index < this.recipes.length) {
-            this.recipes[index].name = name;
-            this.recipes[index].description = desc;
-            this.recipes[index].imagePath = imgPath;
+            this.recipes[index] = recipe;
+
             this.changedRecipes.next(this.getRecipes());
             this.selectRecipe(this.recipes[index]);
         }
+    }
+
+    deleteRecipe(index: number) {
+        this.recipes.splice(index, 1);
+        
+        this.changedRecipes.next(this.getRecipes());
     }
 
 	private setUpRecipes() {
