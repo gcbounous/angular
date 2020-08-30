@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "recipes-book": {
+    "recipes-book-project": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/recipes-book",
+            "outputPath": "dist/recipes-book-project",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -24,8 +24,8 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.css"
+                "node_modules/bootstrap/dist/css/bootstrap.min.css",
+                "src/styles.css"
             ],
             "scripts": []
           },
@@ -63,18 +63,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "recipes-book:build"
+            "browserTarget": "recipes-book-project:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "recipes-book:build:production"
+              "browserTarget": "recipes-book-project:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "recipes-book:build"
+            "browserTarget": "recipes-book-project:build"
           }
         },
         "test": {
@@ -111,15 +111,15 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "recipes-book:serve"
+            "devServerTarget": "recipes-book-project:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "recipes-book:serve:production"
+              "devServerTarget": "recipes-book-project:serve:production"
             }
           }
         }
       }
     }},
-  "defaultProject": "recipes-book"
+  "defaultProject": "recipes-book-project"
 }
