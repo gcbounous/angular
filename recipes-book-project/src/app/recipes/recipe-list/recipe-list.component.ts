@@ -26,8 +26,4 @@ export class RecipeListComponent implements OnInit, OnDestroy {
         this.changedRecipesSubscription.unsubscribe();
     }
 
-    selectRecipe(recipe) {
-        this.recipeService.selectRecipe(recipe);
-    }
-
 }

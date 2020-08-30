@@ -11,7 +11,6 @@ export class RecipesService {
 
 	private recipes: Recipe[];
 
-	recipeSelected = new Subject<Recipe>();
 	changedRecipes = new Subject<Recipe[]>();
 
 	constructor() { 
@@ -27,16 +26,11 @@ export class RecipesService {
             return this.recipes[index];
         }
     }
-
-	selectRecipe(recipe: Recipe) {
-		this.recipeSelected.next(recipe);
-    }
     
     newRecipe(recipe: Recipe): number {
         this.recipes.push(recipe);
 
         this.changedRecipes.next(this.getRecipes());
-        this.selectRecipe(recipe);
 
         return this.getRecipes().length - 1;
     }
@@ -46,13 +40,12 @@ export class RecipesService {
             this.recipes[index] = recipe;
 
             this.changedRecipes.next(this.getRecipes());
-            this.selectRecipe(this.recipes[index]);
         }
     }
 
     deleteRecipe(index: number) {
         this.recipes.splice(index, 1);
-        
+
         this.changedRecipes.next(this.getRecipes());
     }
 
