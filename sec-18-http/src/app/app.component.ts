@@ -1,33 +1,55 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+
+import { Post } from './post.model';
+import { PostService } from './post.service';
+import { Subscription } from 'rxjs';
+
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-  loadedPosts = [];
+export class AppComponent implements OnInit, OnDestroy {
+    loadedPosts: Post[] = [];
+    isFetching: boolean = false;
+    error: any = null;
+    postFetchedSubscription: Subscription;
 
-  constructor(private http: HttpClient) {}
+    constructor(private postService: PostService) {}
 
-  ngOnInit() {}
+    ngOnInit() {
+        this.postFetchedSubscription = this.postService.postsFetched.subscribe(
+            (response: { posts: Post[], error: string }) => {
+                this.isFetching = false;
+                this.loadedPosts = response.posts;
+                console.log(response.error)
+                this.error = response.error;
+            }
+        );
+    }
 
-  onCreatePost(postData: { title: string; content: string }) {
-    // Send Http request
-      console.log(postData);
+    ngOnDestroy() {
+        this.postFetchedSubscription.unsubscribe();
+    }
 
-    this.http.post('https://ng-test-project-44b45.firebaseio.com/posts.json', postData)
-            .subscribe(responseData => {
-                console.log(responseData);
-            });
-  }
+    onCreatePost(postData: Post) {
+        this.postService.createAndStorePost(postData.title, postData.content);
+    }
 
-  onFetchPosts() {
-    // Send Http request
-  }
+    onFetchPosts() {
+        this.isFetching = true;
+        this.postService.fetchPosts();
+    }
 
-  onClearPosts() {
-    // Send Http request
-  }
+    onClearPosts() {
+            this.postService.deletePosts().subscribe(
+                () => this.loadedPosts = []
+            );
+    }
+
+    onErrorOk() {
+        this.error = null;
+    }
+
 }
