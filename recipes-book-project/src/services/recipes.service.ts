@@ -14,11 +14,12 @@ export class RecipesService {
 	changedRecipes = new Subject<Recipe[]>();
 
 	constructor() { 
-		this.recipes = this.setUpRecipes();
+		// this.recipes = this.setUpRecipes();
 	}
 
 	getRecipes() {
-		return this.recipes.slice();
+        if (this.recipes)
+		    return this.recipes.slice();
     }
     
     getRecipe(index: number) {

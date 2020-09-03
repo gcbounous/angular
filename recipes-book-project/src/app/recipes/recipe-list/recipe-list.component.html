@@ -4,10 +4,20 @@
 	</div>
 </div>
 <hr>
-<div class="row">
+<div *ngIf="loading" class="row">
+	<div class="col-md-12">
+		<p> Loading... </p>
+	</div>
+</div>
+<div *ngIf="recipes && recipes.length > 0 && !loading" class="row">
 	<div class="col-md-12">
 		<app-recipe-item *ngFor="let recipeElement of recipes; let i=index" 
                         [recipe]="recipeElement"
                         [id]="i" ></app-recipe-item>
 	</div>
+</div>
+<div *ngIf="(!recipes || recipes.length <= 0) && !loading" class="row">
+    <div class="col-md-12">
+        <h2> No recipes found. </h2>
+    </div>
 </div>

@@ -32,6 +32,8 @@ export class DataStorageService {
             .get<Recipe[]>(this.apiPath)
             .pipe(
                 map(recipes => {
+                    if(!recipes) return [];
+
                     return recipes.map(recipe => {
                         return { 
                             ...recipe,
