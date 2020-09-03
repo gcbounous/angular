@@ -3,7 +3,7 @@ import { Ingredient } from './ingredient.model';
 export class Recipe {
 	public name: string;
 	public description: string;
-	public imagePath: string;
+    public imagePath: string; LogInterceptor
     public ingredients: Ingredient[];
 
 	constructor(name: string, desc: string, imgPath: string, ingredients: Ingredient[] = []) {

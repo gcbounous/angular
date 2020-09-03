@@ -54,7 +54,7 @@ export class RecipeEditComponent implements OnInit {
             this.id = this.recipesService.newRecipe(this.recipeForm.value);
         }
 
-        this.router.navigate(['/recipes', this.id])
+        this.router.navigate(['/recipes', this.id]);
     }
 
     onCancel() {
