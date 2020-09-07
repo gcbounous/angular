@@ -6,6 +6,7 @@ import { RecipesComponent }         from './recipes/recipes.component'
 import { RecipeDetailComponent }    from './recipes/recipe-detail/recipe-detail.component'
 import { RecipeEditComponent }      from './recipes/recipe-edit/recipe-edit.component'
 import { RecipeStartComponent }     from './recipes/recipe-start/recipe-start.component'
+import { AuthComponent }            from './auth/auth.component'
 
 import { RecipeResolver }           from 'src/services/recipe-resolver.service';
 
@@ -17,7 +18,8 @@ export const appRoutes: Routes = [
         { path: ':id', component: RecipeDetailComponent, resolve: [RecipeResolver] },
         { path: ':id/edit', component: RecipeEditComponent, resolve: [RecipeResolver] },
     ]},
-    { path: 'shopping-list', component: ShoppingListComponent }
+    { path: 'shopping-list', component: ShoppingListComponent },
+    { path: 'auth', component: AuthComponent }
 ];
 
 @NgModule({
