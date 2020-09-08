@@ -20,6 +20,7 @@ import { DropdownDirective } from 'src/directives/dropdown.directive';
 import { AuthInterceptorService } from 'src/services/auth-interceptor.service';
 
 import { AppRoutesModule } from "./app-routing.module";
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { AppRoutesModule } from "./app-routing.module";
     AuthComponent,
     LoadingSpinnerComponent,
     DropdownDirective,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
