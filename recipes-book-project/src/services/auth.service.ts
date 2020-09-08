@@ -5,6 +5,7 @@ import { throwError, BehaviorSubject } from 'rxjs';
 
 import { User } from "src/models/user.model";
 import { Router } from '@angular/router';
+import { getLocaleExtraDayPeriods } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class AuthService {
 
     private API_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:';
     private API_KEY = 'AIzaSyAKlOzRd2KRpN-jNcrGJuWqHqJiLfj33oU';
+    private tokenExpirationTimer: any;
 
     constructor(private http: HttpClient, private router: Router) { }
 
@@ -46,15 +48,54 @@ export class AuthService {
         );
     }
 
+    autoLogin() {
+        const userData: {
+            email: string,
+            id: string,
+            _token: string,
+            _tokenExpirationDate: string
+        } = JSON.parse(localStorage.getItem('user'));
+        if (!userData) {
+            return;
+        }
+
+        const loadedUser = new User(userData.email, userData.id, userData._token, new Date(userData._tokenExpirationDate));
+        if (loadedUser.token) {
+            const expirationTime = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
+            this.setUser(loadedUser, expirationTime);
+        }
+    }
+
     logout() {
         this.user.next(null);
+        localStorage.removeItem('user');
         this.router.navigate(['/auth']);
+
+        if (this.tokenExpirationTimer) {
+            clearTimeout(this.tokenExpirationTimer);
+        }
+        this.tokenExpirationTimer = null;
+    }
+
+    autoLogOut(expirationTime: number) {
+        // expirationTime in milliseconds
+        this.tokenExpirationTimer = setTimeout(() => {
+            this.logout();
+            alert('Your session is over. Logging out...')
+        }, expirationTime);
     }
 
     private hendlesAuthentication(authData: AuthResponseData) {
         const tokenExpirationDate = new Date(new Date().getTime() + (+authData.expiresIn * 1000));
         const user = new User(authData.email, authData.localId, authData.idToken, tokenExpirationDate);
+        
+        this.setUser(user, +authData.expiresIn * 1000);
+        localStorage.setItem('user', JSON.stringify(user));
+    }
+
+    private setUser(user: User, expirationTimeInMilli: number) {
         this.user.next(user);
+        this.autoLogOut(expirationTimeInMilli);
     }
 
     private handleError(errorResp: HttpErrorResponse) {
@@ -78,7 +119,6 @@ export class AuthService {
                     break;
             }
         }
-
         return throwError(errorMessage);
     }
 
