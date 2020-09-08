@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, take, exhaustMap } from 'rxjs/operators';
 
-import { RecipesService } from './recipes.service'
-import { Recipe } from '../models/recipe.model';
+import { RecipesService }   from './recipes.service'
+import { AuthService }      from './auth.service';
+import { Recipe }           from '../models/recipe.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class DataStorageService {
     private apiPath = 'https://recipe-book-497f3.firebaseio.com/recipes.json';
 
     constructor(private http: HttpClient,
-                private recipesService: RecipesService) { }
+                private recipesService: RecipesService,
+                private authService: AuthService ) { }
 
     saveRecipes() {
         this.deleteRecipes();
@@ -28,16 +30,18 @@ export class DataStorageService {
     }
 
     fetchRecipes() {
+        
         return this.http
             .get<Recipe[]>(this.apiPath)
             .pipe(
                 map(recipes => {
-                    if(!recipes) return [];
+                    if (!recipes) return [];
 
                     return recipes.map(recipe => {
-                        return { 
+                        return {
                             ...recipe,
-                            ingredients: recipe.ingredients ? recipe.ingredients : [] };
+                            ingredients: recipe.ingredients ? recipe.ingredients : []
+                        };
                     });
                 }),
                 tap((recipes) => {
