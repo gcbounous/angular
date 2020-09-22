@@ -29,7 +29,10 @@ export class AuthService {
                 returnSecureToken : true
             },
             { params: {'key': this.API_KEY } }
-        ).pipe(catchError(this.handleError));
+        ).pipe(
+            catchError(this.handleError),
+            tap(respData => console.log(respData))
+        );
     }
 
     login(email: string, password: string) {
