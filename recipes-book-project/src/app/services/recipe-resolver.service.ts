@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { Recipe } from '../models/recipe.model'
+import { Recipe } from 'src/app/models/recipe.model'
 import { DataStorageService } from './data-storage.service'
 import { RecipesService } from './recipes.service';
 
