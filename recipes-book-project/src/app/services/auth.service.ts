@@ -5,6 +5,7 @@ import { throwError, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 
 import { User } from "src/app/models/user.model";
+import { environment } from 'src/environments/environment'
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,6 @@ export class AuthService {
     user = new BehaviorSubject<User>(null);
 
     private API_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:';
-    private API_KEY = 'AIzaSyAKlOzRd2KRpN-jNcrGJuWqHqJiLfj33oU';
     private tokenExpirationTimer: any;
 
     constructor(private http: HttpClient, private router: Router) { }
@@ -28,7 +28,7 @@ export class AuthService {
                 password : password,
                 returnSecureToken : true
             },
-            { params: {'key': this.API_KEY } }
+            { params: {'key': environment.firebaseAPIKey } }
         ).pipe(
             catchError(this.handleError),
             tap(respData => console.log(respData))
@@ -43,7 +43,7 @@ export class AuthService {
                 password: password,
                 returnSecureToken: true
             },
-            { params: { 'key': this.API_KEY } }
+            { params: { 'key': environment.firebaseAPIKey } }
         ).pipe(
             catchError(this.handleError), 
             tap(respData => this.hendlesAuthentication(respData))
