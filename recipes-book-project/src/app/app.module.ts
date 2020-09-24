@@ -1,6 +1,9 @@
 import { BrowserModule }    from '@angular/platform-browser';
 import { NgModule }         from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { 
+    HttpClientModule,
+    HTTP_INTERCEPTORS }     from '@angular/common/http';
+import { StoreModule } from "@ngrx/store";
     
 import { AppComponent }             from './app.component';
 import { HeaderComponent }          from './header/header.component';
@@ -8,6 +11,7 @@ import { HeaderComponent }          from './header/header.component';
 import { AppRoutesModule }      from "./app-routing.module";
 import { SharedModule }         from './shared/shared.module';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
+import { ShoppingListReducer } from './shopping-list/store/shopping-list.reducer';
 
 @NgModule({
     declarations: [
@@ -18,9 +22,10 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
         BrowserModule,
         HttpClientModule,
         AppRoutesModule,
-        // RecipesModule,       -> Lazy loaded is router
-        // ShoppingListModule,  -> Lazy loaded is router
-        // AuthModule,          -> Lazy loaded is router
+        StoreModule.forRoot( {shoppingList: ShoppingListReducer} ),
+        // RecipesModule,       -> Lazy loaded in router
+        // ShoppingListModule,  -> Lazy loaded in router
+        // AuthModule,          -> Lazy loaded in router
         SharedModule,
     ],
     providers: [{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }],
