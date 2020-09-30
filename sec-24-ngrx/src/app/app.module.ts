@@ -11,7 +11,7 @@ import { HeaderComponent } from './header/header.component';
 import { AppRoutesModule } from './app-routing.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
-import { ShoppingListReducer } from './shopping-list/store/shopping-list.reducer';
+import * as fromApp from './store/app.reducer';
 
 @NgModule({
     declarations: [
@@ -22,7 +22,7 @@ import { ShoppingListReducer } from './shopping-list/store/shopping-list.reducer
         BrowserModule,
         HttpClientModule,
         AppRoutesModule,
-        StoreModule.forRoot( {shoppingList: ShoppingListReducer} ),
+        StoreModule.forRoot(fromApp.appReducer),
         // RecipesModule,       -> Lazy loaded in router
         // ShoppingListModule,  -> Lazy loaded in router
         // AuthModule,          -> Lazy loaded in router
