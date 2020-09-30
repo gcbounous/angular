@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AuthComponent } from "./auth.component";
 
-import { AuthInterceptorService } from 'src/app/services/auth-interceptor.service';
 import { SharedModule } from "src/app/shared/shared.module";
 
 const routes: Routes = [
