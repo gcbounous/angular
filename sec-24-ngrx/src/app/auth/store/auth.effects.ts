@@ -28,6 +28,27 @@ export class AuthEffects {
     ) { }
 
     @Effect()
+    authSignUp = this.actions$.pipe(
+        ofType(AuthActions.SIGN_UP_START),
+        switchMap(
+            (authData: AuthActions.LoginStart) => {
+                return this.http.post<AuthResponseData>(
+                    environment.API_URL + 'signUp',
+                    {
+                        email: authData.payload.email,
+                        password: authData.payload.password,
+                        returnSecureToken: true
+                    },
+                    { params: { 'key': environment.firebaseAPIKey } }
+                ).pipe(
+                    map(respData => this.handleAthentication(respData) ),
+                    catchError( error => this.handleError(error) ) 
+                );
+            }
+        )
+    );
+
+    @Effect()
     authLogin = this.actions$.pipe(
         ofType(AuthActions.LOGIN_START),
         switchMap(
@@ -41,25 +62,31 @@ export class AuthEffects {
                     },
                     { params: { 'key': environment.firebaseAPIKey } }
                 ).pipe(
-                    map(respData => {
-                        const tokenExpirationDate = new Date(new Date().getTime() + (+respData.expiresIn * 1000));
-                        const user = new User(respData.email, respData.localId, respData.idToken, tokenExpirationDate);
-
-                        return new AuthActions.Login(user);
-                    }),
-                    catchError(error => {
-                        return of(new AuthActions.LoginFail(this.handleError(error))); // of() just creates a new empty observable (we can't send an error observable here)
-                    }) 
+                    map( respData => this.handleAthentication(respData) ),
+                    catchError( error => this.handleError(error) ) 
                 );
             }
         )
     );
 
     @Effect({ dispatch: false })
-    authSuccess = this.actions$.pipe(
-        ofType(AuthActions.LOGIN),
-        tap( () => this.router.navigate(['/recipes']) )
+    authSuccessRedirect = this.actions$.pipe(
+        ofType(AuthActions.AUTHENTICATE_SUCCESS),
+        tap( () => this.router.navigate(['/']) )
     );
+
+    @Effect({ dispatch: false })
+    authLogoutRedirect = this.actions$.pipe(
+        ofType(AuthActions.LOGOUT),
+        tap(() => this.router.navigate(['/auth']))
+    );
+
+    private handleAthentication(authData: AuthResponseData) {
+        const tokenExpirationDate = new Date(new Date().getTime() + (+authData.expiresIn * 1000));
+        const user = new User(authData.email, authData.localId, authData.idToken, tokenExpirationDate);
+
+        return new AuthActions.AuthenticateSuccess(user);
+    }
 
     private handleError(errorResp: HttpErrorResponse) {
         let errorMessage = 'An unknown error occured.';
@@ -81,6 +108,7 @@ export class AuthEffects {
                     break;
             }
         }
-        return errorMessage;
+
+        return of(new AuthActions.AuthenticateFail(errorMessage)); // of() just creates a new empty observable (we can't throw an error here)
     }
 }

@@ -24,7 +24,7 @@ export interface AuthResponseData {
 })
 export class AuthService {
     
-    private API_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:';
+    // private API_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:';
     private tokenExpirationTimer: any;
 
     constructor(
@@ -33,35 +33,35 @@ export class AuthService {
         private store: Store<fromApp.AppState>
     ) { }
 
-    signup(email: string, password: string) {
-        return this.http.post<AuthResponseData>(
-            this.API_URL + 'signUp',
-            {
-                email : email,
-                password : password,
-                returnSecureToken : true
-            },
-            { params: {'key': environment.firebaseAPIKey } }
-        ).pipe(
-            catchError(this.handleError),
-            tap(respData => console.log(respData))
-        );
-    }
+    // signup(email: string, password: string) {
+    //     return this.http.post<AuthResponseData>(
+    //         this.API_URL + 'signUp',
+    //         {
+    //             email : email,
+    //             password : password,
+    //             returnSecureToken : true
+    //         },
+    //         { params: {'key': environment.firebaseAPIKey } }
+    //     ).pipe(
+    //         catchError(this.handleError),
+    //         tap(respData => console.log(respData))
+    //     );
+    // }
 
-    login(email: string, password: string) {
-        return this.http.post<AuthResponseData>(
-            this.API_URL + 'signInWithPassword',
-            {
-                email: email,
-                password: password,
-                returnSecureToken: true
-            },
-            { params: { 'key': environment.firebaseAPIKey } }
-        ).pipe(
-            catchError(this.handleError), 
-            tap(respData => this.hendlesAuthentication(respData))
-        );
-    }
+    // login(email: string, password: string) {
+    //     return this.http.post<AuthResponseData>(
+    //         this.API_URL + 'signInWithPassword',
+    //         {
+    //             email: email,
+    //             password: password,
+    //             returnSecureToken: true
+    //         },
+    //         { params: { 'key': environment.firebaseAPIKey } }
+    //     ).pipe(
+    //         catchError(this.handleError), 
+    //         tap(respData => this.hendlesAuthentication(respData))
+    //     );
+    // }
 
     autoLogin() {
         const userData: {
@@ -84,7 +84,7 @@ export class AuthService {
     logout() {
         this.store.dispatch(new authActions.Logout());
         localStorage.removeItem('user');
-        this.router.navigate(['/auth']);
+        // this.router.navigate(['/auth']);
 
         if (this.tokenExpirationTimer) {
             clearTimeout(this.tokenExpirationTimer);
@@ -100,42 +100,42 @@ export class AuthService {
         }, expirationTime);
     }
 
-    private hendlesAuthentication(authData: AuthResponseData) {
-        const tokenExpirationDate = new Date(new Date().getTime() + (+authData.expiresIn * 1000));
-        const user = new User(authData.email, authData.localId, authData.idToken, tokenExpirationDate);
+    // private hendlesAuthentication(authData: AuthResponseData) {
+    //     const tokenExpirationDate = new Date(new Date().getTime() + (+authData.expiresIn * 1000));
+    //     const user = new User(authData.email, authData.localId, authData.idToken, tokenExpirationDate);
         
-        this.setUser(user, +authData.expiresIn * 1000);
-        localStorage.setItem('user', JSON.stringify(user));
-    }
+    //     this.setUser(user, +authData.expiresIn * 1000);
+    //     localStorage.setItem('user', JSON.stringify(user));
+    // }
 
     private setUser(user: User, expirationTimeInMilli: number) {
-        this.store.dispatch(new authActions.Login(user));
+        this.store.dispatch(new authActions.AuthenticateSuccess(user));
         this.autoLogOut(expirationTimeInMilli);
     }
 
-    private handleError(errorResp: HttpErrorResponse) {
-        console.log(errorResp);
-        let errorMessage = 'An unknown error occured.';
+    // private handleError(errorResp: HttpErrorResponse) {
+    //     console.log(errorResp);
+    //     let errorMessage = 'An unknown error occured.';
 
-        if (errorResp.error && errorResp.error.error) {
-            switch (errorResp.error.error.message) {
-                case 'EMAIL_EXISTS':
-                    errorMessage = 'This e-mail already exists!'
-                    break;
-                case 'INVALID_EMAIL':
-                    errorMessage = 'This e-mail in invalid! Please enter a valid email.'
-                    break;
-                case 'EMAIL_NOT_FOUND':
-                case 'INVALID_PASSWORD':
-                    errorMessage = 'You have typed a wrong e-mail or password. Please try again.'
-                    break;
-                case 'USER_DISABLED':
-                    errorMessage = 'This user has been disabled.'
-                    break;
-            }
-        }
-        return throwError(errorMessage);
-    }
+    //     if (errorResp.error && errorResp.error.error) {
+    //         switch (errorResp.error.error.message) {
+    //             case 'EMAIL_EXISTS':
+    //                 errorMessage = 'This e-mail already exists!'
+    //                 break;
+    //             case 'INVALID_EMAIL':
+    //                 errorMessage = 'This e-mail in invalid! Please enter a valid email.'
+    //                 break;
+    //             case 'EMAIL_NOT_FOUND':
+    //             case 'INVALID_PASSWORD':
+    //                 errorMessage = 'You have typed a wrong e-mail or password. Please try again.'
+    //                 break;
+    //             case 'USER_DISABLED':
+    //                 errorMessage = 'This user has been disabled.'
+    //                 break;
+    //         }
+    //     }
+    //     return throwError(errorMessage);
+    // }
 
 }
 
