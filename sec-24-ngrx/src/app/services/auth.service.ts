@@ -3,9 +3,12 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
 import { User } from "src/app/models/user.model";
-import { environment } from 'src/environments/environment'
+import { environment } from 'src/environments/environment';
+import * as fromApp from '../store/app.reducer';
+import * as authActions from '../auth/store/auth.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +16,16 @@ import { environment } from 'src/environments/environment'
 export class AuthService {
     
     // with this type of subject we can have access to the user even if the event has beeen emitted some time ago.
-    user = new BehaviorSubject<User>(null);
+    // user = new BehaviorSubject<User>(null);
 
     private API_URL = 'https://identitytoolkit.googleapis.com/v1/accounts:';
     private tokenExpirationTimer: any;
 
-    constructor(private http: HttpClient, private router: Router) { }
+    constructor(
+        private http: HttpClient,
+        private router: Router,
+        private store: Store<fromApp.AppState>
+    ) { }
 
     signup(email: string, password: string) {
         return this.http.post<AuthResponseData>(
@@ -69,7 +76,8 @@ export class AuthService {
     }
 
     logout() {
-        this.user.next(null);
+        // this.user.next(null);
+        this.store.dispatch(new authActions.Logout());
         localStorage.removeItem('user');
         this.router.navigate(['/auth']);
 
@@ -96,7 +104,8 @@ export class AuthService {
     }
 
     private setUser(user: User, expirationTimeInMilli: number) {
-        this.user.next(user);
+        // this.user.next(user);
+        this.store.dispatch(new authActions.Login(user));
         this.autoLogOut(expirationTimeInMilli);
     }
 

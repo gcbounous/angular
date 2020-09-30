@@ -1,9 +1,11 @@
 import { Component, OnInit, Output,EventEmitter, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { DataStorageService } from 'src/app/services/data-storage.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { Subscription } from 'rxjs';
+import * as fromApp from 'src/app/store/app.reducer';
 
 @Component({
   selector: 'app-header',
@@ -18,10 +20,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     constructor(private dataStorage: DataStorageService,
                 private authService: AuthService,
-                private router: Router) { }
+                private router: Router,
+                private store: Store<fromApp.AppState>) { }
 
     ngOnInit(): void {
-        this.userSubscription = this.authService.user.subscribe(user => this.isAuthenticated = !!user);
+        this.userSubscription = this.store.select('auth').subscribe(authState => this.isAuthenticated = !!authState.user);
     }
 
     ngOnDestroy() {
