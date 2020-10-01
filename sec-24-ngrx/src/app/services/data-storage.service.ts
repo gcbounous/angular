@@ -5,7 +5,6 @@ import { map, tap } from 'rxjs/operators';
 import { Recipe }           from 'src/app/models/recipe.model';
 
 import { RecipesService }   from './recipes.service'
-import { AuthService }      from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +13,10 @@ export class DataStorageService {
 
     private apiPath = 'https://recipe-book-497f3.firebaseio.com/recipes.json';
 
-    constructor(private http: HttpClient,
-                private recipesService: RecipesService,
-                private authService: AuthService ) { }
+    constructor(
+        private http: HttpClient,
+        private recipesService: RecipesService,
+    ) { }
 
     saveRecipes() {
         this.deleteRecipes();

@@ -7,6 +7,7 @@ export const AUTHENTICATE_SUCCESS   = '[Auth] Authenticate success';
 export const AUTHENTICATE_FAIL      = '[Auth] Authenticate fail';
 export const LOGOUT                 = '[Auth] Logout';
 export const CLEAR_ERROR            = '[Auth] Clear error';
+export const AUTO_LOGIN             = '[Auth] Auto login';
 
 export type AuthActions =
 AuthenticateSuccess
@@ -14,27 +15,22 @@ AuthenticateSuccess
 | LoginStart
 | SignUpStart
 | Logout
-| ClearError;
+| ClearError
+| AutoLogin;
 
-interface AuthAction {
-    readonly type: string;
-    payload?: any;
-}
-
-
-export class AuthenticateSuccess implements Action, AuthAction {
+export class AuthenticateSuccess implements Action {
     readonly type = AUTHENTICATE_SUCCESS;
     
     constructor(public payload: User) {}
 }
 
-export class AuthenticateFail implements Action, AuthAction {
+export class AuthenticateFail implements Action {
     readonly type = AUTHENTICATE_FAIL;
 
     constructor(public payload: string) { }
 }
 
-export class LoginStart implements Action, AuthAction {
+export class LoginStart implements Action {
     readonly type = LOGIN_START;
     payload: { email: string, password: string };
 
@@ -43,7 +39,7 @@ export class LoginStart implements Action, AuthAction {
     }
 }
 
-export class SignUpStart implements Action, AuthAction {
+export class SignUpStart implements Action {
     readonly type = SIGN_UP_START;
     payload: { email: string, password: string };
 
@@ -52,10 +48,14 @@ export class SignUpStart implements Action, AuthAction {
     }
 }
 
-export class Logout implements Action, AuthAction {
+export class Logout implements Action {
     readonly type = LOGOUT;
 }
 
-export class ClearError implements Action, AuthAction {
+export class ClearError implements Action {
     readonly type = CLEAR_ERROR;
+}
+
+export class AutoLogin implements Action {
+    readonly type = AUTO_LOGIN;
 }

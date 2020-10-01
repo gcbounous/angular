@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { DataStorageService } from 'src/app/services/data-storage.service';
-import { AuthService } from 'src/app/services/auth.service';
 import * as fromApp from 'src/app/store/app.reducer';
 import * as authActions from 'src/app/auth/store/auth.actions';
 
@@ -20,7 +19,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private userSubscription: Subscription;
 
     constructor(private dataStorage: DataStorageService,
-                private authService: AuthService,
                 private router: Router,
                 private store: Store<fromApp.AppState>) { }
 
