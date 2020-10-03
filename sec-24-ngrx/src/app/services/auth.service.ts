@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import * as fromApp from '../store/app.reducer';
-import * as authActions from '../auth/store/auth.actions';
+import * as AuthActions from '../auth/store/auth.actions';
 
 export interface AuthResponseData {
     idToken: string;
@@ -26,7 +26,7 @@ export class AuthService {
         // expirationTime in milliseconds
         this.tokenExpirationTimer = setTimeout(() => {
             alert('Your session is over. Logging out...')
-            this.store.dispatch(new authActions.Logout());
+            this.store.dispatch(new AuthActions.Logout());
         }, expirationTime);
     }
 

@@ -90,7 +90,7 @@ export class AuthEffects {
             if (loadedUser.token) {
                 const expirationTime = new Date(userData._tokenExpirationDate).getTime() - new Date().getTime();
                 this.authService.setLogoutTimer(expirationTime);
-                return new AuthActions.AuthenticateSuccess(loadedUser);
+                return new AuthActions.AuthenticateSuccess(loadedUser, false);
             }
 
             return { type: 'DUMMY'};
@@ -101,7 +101,12 @@ export class AuthEffects {
     @Effect({ dispatch: false })
     authSuccessRedirect = this.actions$.pipe(
         ofType(AuthActions.AUTHENTICATE_SUCCESS),
-        tap( () => this.router.navigate(['/']) )
+        tap( 
+            (authAction: AuthActions.AuthenticateSuccess) => {
+                if (authAction.payload.redirect) {
+                    this.router.navigate(['/']);
+            }
+        } )
     );
 
     @Effect({ dispatch: false })
@@ -120,7 +125,7 @@ export class AuthEffects {
 
         localStorage.setItem('user', JSON.stringify(user));
         this.authService.setLogoutTimer(+authData.expiresIn * 1000);
-        return new AuthActions.AuthenticateSuccess(user);
+        return new AuthActions.AuthenticateSuccess(user, true);
     }
 
     private handleError(errorResp: HttpErrorResponse) {

@@ -16,6 +16,7 @@ import { SharedModule } from './shared/shared.module';
 import { AuthInterceptorService } from './services/auth-interceptor.service';
 import * as fromApp from './store/app.reducer';
 import { AuthEffects } from "./auth/store/auth.effects";
+import { RecipesEffects } from "./recipes/store/recipe.effects";
 import { environment } from "../environments/environment";
 
 @NgModule({
@@ -28,7 +29,7 @@ import { environment } from "../environments/environment";
         HttpClientModule,
         AppRoutesModule,
         StoreModule.forRoot(fromApp.appReducer),
-        EffectsModule.forRoot([AuthEffects]),
+        EffectsModule.forRoot([AuthEffects, RecipesEffects]),
         StoreDevtoolsModule.instrument({ logOnly: environment.production }),
         StoreRouterConnectingModule.forRoot(),
         // RecipesModule,       -> Lazy loaded in router

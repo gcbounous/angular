@@ -1,4 +1,5 @@
 import { Action } from "@ngrx/store";
+
 import { User } from 'src/app/models/user.model';
 
 export const LOGIN_START            = '[Auth] Login start';
@@ -20,8 +21,11 @@ AuthenticateSuccess
 
 export class AuthenticateSuccess implements Action {
     readonly type = AUTHENTICATE_SUCCESS;
+    payload: {user: User, redirect: boolean}
     
-    constructor(public payload: User) {}
+    constructor(user: User, redirect: boolean) {
+        this.payload = {user: user, redirect: redirect};
+    }
 }
 
 export class AuthenticateFail implements Action {

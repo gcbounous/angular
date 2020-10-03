@@ -39,12 +39,12 @@ export function shoppingListReducer(
                 ...oldIngredient,   // we get the whole old ingredient's properties
                 ...action.payload   // we change the properties we have on the ingredient in our payload
             };
-            const updatesIngredients = [...state.ingredients];
-            updatesIngredients[state.editedIngredientIndex] = updatedIngredient;
+            const updatedIngredients = [...state.ingredients];
+            updatedIngredients[state.editedIngredientIndex] = updatedIngredient;
 
             return {
                 ...state,
-                ingredients : updatesIngredients
+                ingredients : updatedIngredients
             }
 
         case ShoppingListAction.DELETE_INGREDIENT:

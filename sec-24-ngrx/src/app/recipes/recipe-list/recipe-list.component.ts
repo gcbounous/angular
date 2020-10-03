@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { Recipe }               from 'src/app/models/recipe.model';
-import { RecipesService }       from 'src/app/services/recipes.service';
-import { DataStorageService }   from 'src/app/services/data-storage.service';
+import * as fromApp from '../../store/app.reducer';
 
 @Component({
   selector: 'app-recipe-list',
@@ -16,22 +16,23 @@ export class RecipeListComponent implements OnInit, OnDestroy {
     recipes: Recipe[];
     loading: boolean = false;
 
-    constructor(private recipeService: RecipesService,
-                private dataStorageService: DataStorageService) { }
+    constructor(
+        private store: Store<fromApp.AppState>,
+    ) { }
 
     ngOnInit(): void {
-        this.recipes = this.recipeService.getRecipes();
-        this.changedRecipesSubscription = this.recipeService.changedRecipes.subscribe(
-            (recipes: Recipe[]) => { this.recipes = recipes;}
+
+        this.changedRecipesSubscription = this.store.select('recipes').subscribe(
+            (recipesState) => { this.recipes = recipesState.recipes; }
         );
-        
-        if (!this.recipes) {
-            this.loading = true;
-            this.dataStorageService.fetchRecipes().subscribe(
-                () => this.loading = false,
-                (error) => this.loading = false
-            );
-        }
+
+        // if (this.recipes.length === 0) {
+        //     this.loading = true;
+        //     this.dataStorageService.fetchRecipes().subscribe(
+        //         () => this.loading = false,
+        //         (error) => this.loading = false
+        //     );
+        // }
 
     }
 
