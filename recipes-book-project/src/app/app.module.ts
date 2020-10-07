@@ -15,7 +15,7 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
         HeaderComponent,
     ],
     imports: [
-        BrowserModule,
+        BrowserModule.withServerTransition({ appId: 'serverApp' }),
         HttpClientModule,
         AppRoutesModule,
         // RecipesModule,       -> Lazy loaded is router
