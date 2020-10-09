@@ -3,12 +3,12 @@ import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
-import { AuthService, AuthResponseData } from 'src/app/services/auth.service'
+import { AuthService, AuthResponseData } from 'src/app/services/auth.service';
 
 @Component({
-  selector: 'app-auth',
-  templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css']
+    selector: 'app-auth',
+    templateUrl: './auth.component.html',
+    styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
 
@@ -21,11 +21,11 @@ export class AuthComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    onSwitchMode() {
+    onSwitchMode(): void {
         this.isLoginMode = !this.isLoginMode;
     }
 
-    onSubmit(form: NgForm) {
+    onSubmit(form: NgForm): void {
         if (!form.valid) {
             return;
         }
@@ -40,7 +40,7 @@ export class AuthComponent implements OnInit {
         } else {
             authFuncObservable = this.authService.signup(email, password);
         }
-        
+
         this.isLoading = true;
         authFuncObservable.subscribe(
             responseData => {
@@ -57,7 +57,7 @@ export class AuthComponent implements OnInit {
         form.resetForm();
     }
 
-    onCloseErrorAlert() {
+    onCloseErrorAlert(): void {
         this.error = null;
     }
 }

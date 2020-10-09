@@ -1,18 +1,18 @@
 <div class="row">
-	<div class="col-md-12">
-		<button class="btn btn-success" [routerLink]="['new']"> New Recipe </button>
-	</div>
+    <div class="col-md-12">
+        <button class="btn btn-success" [routerLink]="['new']"> New Recipe </button>
+    </div>
 </div>
 <hr>
 <div *ngIf="loading" class="row">
-	<app-loading-spinner></app-loading-spinner>
+    <app-loading-spinner></app-loading-spinner>
 </div>
 <div *ngIf="recipes && recipes.length > 0 && !loading" class="row">
-	<div class="col-md-12">
-		<app-recipe-item *ngFor="let recipeElement of recipes; let i=index" 
+    <div class="col-md-12">
+        <app-recipe-item *ngFor="let recipeElement of recipes; let i=index" 
                         [recipe]="recipeElement"
                         [id]="i" ></app-recipe-item>
-	</div>
+    </div>
 </div>
 <div *ngIf="(!recipes || recipes.length <= 0) && !loading" class="row">
     <div class="col-md-12">

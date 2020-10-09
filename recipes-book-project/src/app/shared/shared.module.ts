@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { AlertComponent } from "./alert/alert.component";
-import { LoadingSpinnerComponent } from "./loading-spinner/loading-spinner.component";
-import { DropdownDirective } from "./directives/dropdown.directive";
+import { AlertComponent } from './alert/alert.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { DropdownDirective } from './directives/dropdown.directive';
 
 @NgModule({
     imports: [

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpParams } from '@angular/common/http';
 
-import { AuthService } from './auth.service'
+import { AuthService } from './auth.service';
 import { take, exhaustMap } from 'rxjs/operators';
 
 @Injectable()
@@ -9,7 +9,7 @@ export class AuthInterceptorService implements HttpInterceptor {
 
     constructor(private authService: AuthService) {}
 
-    intercept(req: HttpRequest<any>, next: HttpHandler) {
+    intercept(req: HttpRequest<any>, next: HttpHandler): any {
         /**
          * take     : gets only 1 (set by parameter) time the user and closes the user subscription
          * exaustMap: creates an Observable with the value that came from the subscription above

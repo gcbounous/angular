@@ -8,13 +8,13 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class AlertComponent implements OnInit {
 
     @Input() message: string;
-    @Output() close = new EventEmitter<void>();
+    @Output() closeAlert = new EventEmitter<void>();
 
     constructor() { }
 
     ngOnInit(): void { }
 
-    onClose() {
-        this.close.emit();
+    onClose(): void {
+        this.closeAlert.emit();
     }
 }

@@ -14,38 +14,34 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
 
     @ViewChild('shoppingForm', {static: true}) shoppingForm: NgForm;
 
-    editMode: boolean = false;
+    editMode = false;
     igredientIndex: number;
     editSubscription: Subscription;
 
     constructor(private shoppingListService: ShoppingListService) { }
 
-	ngOnInit(): void {
+    ngOnInit(): void {
         this.editSubscription = this.shoppingListService.editingIngredient.subscribe(
             (index: number) => {
                 this.igredientIndex = index;
 
-                let ingredient: Ingredient = this.shoppingListService.getIngredient(index);
-                this.shoppingForm.form.setValue({'name':ingredient.name, 'amount': ingredient.amount});
+                const ingredient: Ingredient = this.shoppingListService.getIngredient(index);
+                this.shoppingForm.form.setValue({name: ingredient.name, amount: ingredient.amount});
                 this.editMode = true;
             }
         );
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.editSubscription.unsubscribe();
     }
 
-    loadItemToEdit(index: number) {
-
-    }
-
-    onSubmit() {
+    onSubmit(): void {
         console.log(this.shoppingForm);
 
-        let formValues = this.shoppingForm.form.value;
+        const formValues = this.shoppingForm.form.value;
         if (this.editMode) {
-            this.shoppingListService.editIngredient(this.igredientIndex, formValues.name, formValues.amount)
+            this.shoppingListService.editIngredient(this.igredientIndex, formValues.name, formValues.amount);
         } else {
             this.shoppingListService.addIngredient(formValues.name, formValues.amount);
         }
@@ -53,12 +49,12 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
         this.onClearForm();
     }
 
-    onClearForm() {
+    onClearForm(): void {
         this.shoppingForm.resetForm();
         this.editMode = false;
     }
 
-    onDeleteItem() {
+    onDeleteItem(): void {
         if (this.editMode) {
             this.shoppingListService.deleteIngredient(this.igredientIndex);
             this.onClearForm();
