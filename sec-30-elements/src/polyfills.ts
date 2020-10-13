@@ -21,6 +21,14 @@
 /** IE10 and IE11 requires the following for NgClass support on SVG elements */
 // import 'classlist.js';  // Run `npm install --save classlist.js`.
 
+/* Evergreen browser requires this */
+// Used for reflect meta-data in JIT.
+// import 'core-js/es7/reflect';
+import '@webcomponents/custom-elements/custom-elements.min';
+
+/* Required for custom elements for apps building to es5 */
+import '@webcomponents/custom-elements/src/native-shim';
+
 /**
  * Web Animations `@angular/platform-browser/animations`
  * Only required if AnimationBuilder is used within the application and using IE/Edge or Safari.
